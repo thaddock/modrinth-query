@@ -28,11 +28,16 @@ func main() {
 								Value: "",
 								Usage: "query to perform",
 							},
+							&cli.StringFlag{
+								Name:  "facets",
+								Value: "",
+								Usage: "query facets",
+							},
 						},
 						Action: func(ctx *cli.Context) error {
 							fmt.Println("*** Query projects")
 							c := api.NewClient()
-							sr, err := api.ProjectSearch(c, ctx.String("query"), "", "", 0, 10)
+							sr, err := api.ProjectSearch(c, ctx.String("query"), ctx.String("facets"), "", 0, 10)
 							if err != nil {
 								return err
 							}
