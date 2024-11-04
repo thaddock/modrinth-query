@@ -50,6 +50,104 @@ func main() {
 					},
 				},
 			},
+			{
+				Name:  "version",
+				Usage: "Version subcommands",
+				Subcommands: []*cli.Command{
+					{
+						Name:  "query",
+						Usage: "Get version",
+						Flags: []cli.Flag{
+							&cli.StringFlag{
+								Name:  "id",
+								Value: "",
+								Usage: "Project id",
+							},
+							&cli.StringFlag{
+								Name:  "loaders",
+								Value: "",
+								Usage: "Loaders",
+							},
+							&cli.StringFlag{
+								Name:  "game_versions",
+								Value: "",
+								Usage: "Game versions",
+							},
+							&cli.StringFlag{
+								Name:  "featured",
+								Value: "",
+								Usage: "Featured?",
+							},
+						},
+						Action: func(ctx *cli.Context) error {
+							c := api.NewClient()
+							var featured *bool
+							if ctx.String("featured") != "" {
+								value := ctx.Bool("featured")
+								featured = &value
+							}
+							vr, err := api.GetVersion(c, ctx.String("id"), ctx.String("loaders"), ctx.String("game_versions"), featured)
+							if err != nil {
+								return err
+							}
+							for _, v := range vr {
+								fmt.Printf("%s:\t%s\t%s\t%s\n", v.Name, v.VersionNumber, v.DatePublished, v.GameVersions)
+							}
+							return nil
+						},
+					},
+				},
+			},
+			{
+				Name:  "version_file",
+				Usage: "Version File subcommands",
+				Subcommands: []*cli.Command{
+					{
+						Name:  "query",
+						Usage: "Get Version from File",
+						Flags: []cli.Flag{
+							&cli.StringFlag{
+								Name:  "hash",
+								Value: "",
+								Usage: "Hash to query",
+							},
+							&cli.StringFlag{
+								Name:  "algorithm",
+								Value: "sha1",
+								Usage: "Algorithm for hash",
+							},
+						},
+						Action: func(ctx *cli.Context) error {
+							c := api.NewClient()
+							vr, err := api.GetVersionFile(c, ctx.String("hash"), ctx.String("algorithm"), false)
+							if err != nil {
+								return err
+							}
+							if vr == nil {
+								fmt.Printf("File not found\n")
+								return nil
+							}
+							fmt.Printf("%s %s\n", vr.Name, vr.VersionNumber)
+							return nil
+						},
+					},
+				},
+			},
+			{
+				Name:  "sync",
+				Usage: "Sync a directory",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:  "dir",
+						Value: "",
+						Usage: "Directory to scan",
+					},
+				},
+				Action: func(ctx *cli.Context) error {
+					c := api.NewClient()
+					return DoSync(c, ctx.String("dir"))
+				},
+			},
 		},
 	}
 	if err := app.Run(os.Args); err != nil {
