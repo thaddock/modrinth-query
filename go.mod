@@ -1,4 +1,4 @@
-module github.com/lazerdye/modrinth_query
+module github.com/thaddock/modrinth-query
 
 go 1.23.2
 

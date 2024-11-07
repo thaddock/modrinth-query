@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/lazerdye/modrinth_query/api"
+	"github.com/thaddock/modrinth-query/api"
 	"github.com/urfave/cli/v2"
 )
 

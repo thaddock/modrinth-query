@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/lazerdye/modrinth_query/api"
+	"github.com/thaddock/modrinth-query/api"
 )
 
 func sha1sum(file string) (string, error) {
