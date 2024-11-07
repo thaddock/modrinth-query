@@ -68,14 +68,14 @@ func main() {
 								Value: "",
 								Usage: "Loaders",
 							},
-							&cli.StringFlag{
+							&cli.StringSliceFlag{
 								Name:  "game_versions",
-								Value: "",
+								Value: nil,
 								Usage: "Game versions",
 							},
-							&cli.StringFlag{
+							&cli.StringSliceFlag{
 								Name:  "featured",
-								Value: "",
+								Value: nil,
 								Usage: "Featured?",
 							},
 						},
@@ -86,7 +86,7 @@ func main() {
 								value := ctx.Bool("featured")
 								featured = &value
 							}
-							vr, err := api.GetVersion(c, ctx.String("id"), ctx.String("loaders"), ctx.String("game_versions"), featured)
+							vr, err := api.GetVersion(c, ctx.String("id"), ctx.StringSlice("loaders"), ctx.StringSlice("game_versions"), featured)
 							if err != nil {
 								return err
 							}
@@ -142,10 +142,25 @@ func main() {
 						Value: "",
 						Usage: "Directory to scan",
 					},
+					&cli.StringSliceFlag{
+						Name:  "loaders",
+						Value: nil,
+						Usage: "Loaders",
+					},
+					&cli.StringSliceFlag{
+						Name:  "game_versions",
+						Value: nil,
+						Usage: "Game versions",
+					},
+					&cli.BoolFlag{
+						Name:  "update",
+						Value: false,
+						Usage: "Update modules with newer versions",
+					},
 				},
 				Action: func(ctx *cli.Context) error {
 					c := api.NewClient()
-					return DoSync(c, ctx.String("dir"))
+					return DoSync(c, ctx.String("dir"), ctx.StringSlice("loaders"), ctx.StringSlice("game_versions"), ctx.Bool("update"))
 				},
 			},
 		},

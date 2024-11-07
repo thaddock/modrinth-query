@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 type GetVersionResult struct {
@@ -28,10 +29,14 @@ type GetVersionResult struct {
 	Files           []GetVersionFileInfo   `json:"files"`
 }
 
-func GetVersion(c *Client, project_id string, loaders string, game_versions string, featured *bool) ([]GetVersionResult, error) {
+func GetVersion(c *Client, project_id string, loaders []string, game_versions []string, featured *bool) ([]GetVersionResult, error) {
 	params := url.Values{}
-	params.Add("loaders", loaders)
-	params.Add("game_versions", game_versions)
+	if len(loaders) > 0 {
+		params.Add("loaders", "[\""+strings.Join(loaders, "\",\"")+"\"]")
+	}
+	if len(game_versions) > 0 {
+		params.Add("game_versions", "[\""+strings.Join(game_versions, "\",\"")+"\"]")
+	}
 	if featured != nil && *featured {
 		params.Add("featured", "true")
 	} else if featured != nil && !*featured {
