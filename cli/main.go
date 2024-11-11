@@ -63,9 +63,9 @@ func main() {
 								Value: "",
 								Usage: "Project id",
 							},
-							&cli.StringFlag{
+							&cli.StringSliceFlag{
 								Name:  "loaders",
-								Value: "",
+								Value: nil,
 								Usage: "Loaders",
 							},
 							&cli.StringSliceFlag{
