@@ -50,7 +50,7 @@ func GetVersionFile(c *Client, hash string, algorithm string, multiple bool) (*G
 	if multiple {
 		params.Add("multiple", "true")
 	}
-	url := fmt.Sprintf("%s/version_file/%s?%s", QueryUrl, hash, params.Encode())
+	url := fmt.Sprintf("%s/version_file/%s?%s", c.BaseUrl, hash, params.Encode())
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err

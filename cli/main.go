@@ -92,6 +92,9 @@ func main() {
 							}
 							for _, v := range vr {
 								fmt.Printf("%s:\t%s\t%s\t%s\n", v.Name, v.VersionNumber, v.DatePublished, v.GameVersions)
+								for _, d := range v.Dependencies {
+									fmt.Printf("\tDep: %s (%s)\n", d.ProjectId, d.DependencyType)
+								}
 							}
 							return nil
 						},

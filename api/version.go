@@ -42,7 +42,7 @@ func GetVersion(c *Client, project_id string, loaders []string, game_versions []
 	} else if featured != nil && !*featured {
 		params.Add("featured", "false")
 	}
-	url := fmt.Sprintf("%s/project/%s/version?%s", QueryUrl, project_id, params.Encode())
+	url := fmt.Sprintf("%s/project/%s/version?%s", c.BaseUrl, project_id, params.Encode())
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err

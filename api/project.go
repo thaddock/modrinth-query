@@ -9,10 +9,6 @@ import (
 	"strconv"
 )
 
-const (
-	QueryUrl = "https://api.modrinth.com/v2"
-)
-
 type Project struct {
 	ProjectId         string   `json:"project_id"`
 	ProjectType       string   `json:"project_type"`
@@ -53,7 +49,7 @@ func ProjectSearch(c *Client, query string, facets string, index string, offset 
 	}
 	params.Add("offset", strconv.Itoa(int(offset)))
 	params.Add("limit", strconv.Itoa(int(limit)))
-	url := fmt.Sprintf("%s/search?%s", QueryUrl, params.Encode())
+	url := fmt.Sprintf("%s/search?%s", c.BaseUrl, params.Encode())
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
